@@ -1,11 +1,15 @@
 import sys
 import re
 import os
+import subprocess
 
 # --- ENVIRONMENT AND USER CONFIG ---
 USE_JAGEX_LAUNCHER = True # True or False
 RS_CFG_PATH = "C:/ProgramData/Jagex/launcher"
 JAGEX_LAUNCHER_PATH = "C:/Program Files (x86)/Jagex Launcher"
+
+AHK_EXEC_PATH = "C:/Program Files/AutoHotkey/AutoHotkey.exe"
+AHK_DIR_PATH = "D:/git_repos/ahk_rs"
 
 # -- SCRIPT START ---
 lang = 0 
@@ -22,5 +26,18 @@ if(USE_JAGEX_LAUNCHER):
     os.startfile(JAGEX_LAUNCHER_PATH + "/JagexLauncher.exe")
 else:
     os.startfile(RS_CFG_PATH + "/rs2client.exe")
+
+if AHK_DIR_PATH is not None:
+    if sys.platform != "win32":
+        print("Cannot launch AHK on non-windows platform.")
+        exit()
+    try:
+        subprocess.Popen([
+            AHK_EXEC_PATH,
+            f"{AHK_DIR_PATH}/rs.ahk"
+        ])
+    except:
+        print(f"""Could not find {AHK_DIR_PATH}/rs.ahk""")
+        exit()
 
 print(f"Successfully started script with parameters:\n -Jagex launcher = {USE_JAGEX_LAUNCHER}\n -Language = {lang}")
