@@ -8,6 +8,7 @@ USE_JAGEX_LAUNCHER = True # True or False
 RS_CFG_PATH = "C:/ProgramData/Jagex/launcher"
 JAGEX_LAUNCHER_PATH = "C:/Program Files (x86)/Jagex Launcher"
 
+# Optional AHK auto launch. Can leave both paths empty.
 AHK_EXEC_PATH = "C:/Program Files/AutoHotkey/AutoHotkey.exe"
 AHK_DIR_PATH = "D:/git_repos/ahk_rs"
 
@@ -29,15 +30,14 @@ else:
 
 if AHK_DIR_PATH is not None:
     if sys.platform != "win32":
-        print("Cannot launch AHK on non-windows platform.")
-        exit()
+        print("Cannot launch AHK on non-windows platform. Ignoring.")
     try:
+        os.chdir(AHK_DIR_PATH)
         subprocess.Popen([
             AHK_EXEC_PATH,
             f"{AHK_DIR_PATH}/rs.ahk"
         ])
     except:
-        print(f"""Could not find {AHK_DIR_PATH}/rs.ahk""")
-        exit()
+        print(f"""Could not find {AHK_DIR_PATH}/rs.ahk. Ignoring.""")
 
 print(f"Successfully started script with parameters:\n -Jagex launcher = {USE_JAGEX_LAUNCHER}\n -Language = {lang}")
